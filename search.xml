@@ -75,7 +75,7 @@
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>联邦学习中假设全局模型可以同时拟合所有参与方的本地数据，但是显然是不可能的，下图中给出反例。</p>
 <img src="/2021/03/25/%E9%9B%86%E7%BE%A4%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9AClustered-Federated-Learning/1.jpg" class="">
 <p><strong>假设1</strong>：存在$\theta^*$在所有参与方的数据分布上都可以最小化损失：</p>
-<p>$R_i(\theta^*)\leq {\underset {\theta}{min}}f(\theta)=R_i(\theta)$         $i=1,…,M$</p>
+<p>$R_i(\theta^*)\leq {\underset {\theta}{min}}R_i(\theta)$         $i=1,…,M$</p>
 <p>这样，如果所有参与方满足假设1，就称所有参与方的本地数据分布是<strong><font color="#ff0000">全等</font></strong>的。但是事实上，假设1在联邦学习中经常被违反，例如下面这四个场景：</p>
 <ul>
 <li>不同的参与方具有不同的喜好：例如要在很多个用户所拥有的人脸数据集上联邦训练一个“人脸吸引力”分类器，但是不同的用户对人脸的喜好是不一样的，这导致很难满足假设1。</li>
