@@ -28,46 +28,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>个性化联邦学习：Personalized Federated Learning</title>
-    <url>/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/</url>
-    <content><![CDATA[<p>今日调研了Alireza Fallah等人提出的个性化联邦学习，<a href="https://arxiv.org/abs/2002.07948">论文链接</a></p>
-<span id="more"></span>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在联邦学习场景中，存在$n$个参与方和一个服务器，其中每个参与方都只能访问自己本地的数据样本，利用本地数据样本训练本地模型，再将本地模型参数上传至服务器，服务器收到所有进行本地训练的参与方的本地模型参数后，对其进行聚合（往往是加权平均）获得全局模型参数，再将其广播给所有的参与方，进行下一轮训练。将$f_i:R^d\rightarrow R$作为参与方$i$的损失函数，那么联邦学习的目标就是：</p>
-<p>​                                                                              ${\underset {w\in R^d}{min}}f(w):=\frac{1}{n}\sum_{i=1}^nf_i(w)$           (1)</p>
-<p>对于监督学习，$f_i$可以代表参与方$i$的本地数据分布上的期望损失：</p>
-<p>​                                                                              $f_i(w):=E_{(x,y)\sim p_i}[l_i(w;x,y)]$        (2)</p>
-<p>其中$l_i(w;x,y)$代表模型$w$在预测标签为$y$的样本$x$时造成的损失，$p_i$是用户$i$的数据分布。在数据异构性强的设定下不同参与方的本地数据的分布是互不相同的。那么$f_i(w)$同样可以写作$f_i(w)=\sum_{(x,y)\in S_i}p_i(x,y)l_i(w;x,y)$，其中$S_i$代表参与方$i$的本地数据集，$p_i(x,y)$代表该样本在参与方$i$的本地数据集被采样的概率。</p>
-<p>这样子最后获得的全局模型并不能适用于每个用户，特别是在用户的底层数据分布不相同的异构设置中，通过最小化平均损失获得的全局模型一旦应用到每个用户的本地数据集上，可能会执行得很糟糕。换句话说，式（1）给出的解决方案并不是针对每个用户的个性化，不能完全实现特定于用户的模型。</p>
-<p>故而本文作者提出了个性化联邦学习，其目标是找到一个所有参与方共享的初始点，每个参与方依据其自身的损失函数更新这个初始点，执行比较少的梯度更新步骤就可以表现良好。这样，虽然初始模型在所有参与方中一致，但每个参与方实现的最终模型根据其本地数据的不同而不同。作者研究了FedAvg算法的变体——Per-FedAvg，用于解决个性化联邦学习问题。</p>
-<h2 id="通过MAML进行个性化联邦学习"><a href="#通过MAML进行个性化联邦学习" class="headerlink" title="通过MAML进行个性化联邦学习"></a>通过MAML进行个性化联邦学习</h2><p>首先回顾MAML。与传统的监督学习设置不同，在MAML中，给定一组从基础分布中抽取的任务，目标不是找到一个在预期的所有任务上都表现良好的模型，而是找到一个初始化模型，它基于新的任务在经过较少的训练更新步骤之后，在该任务上表现良好。特别地，作者假设联邦学习中每个参与方都取这个初始点，并根据自身的损失函数更新一次模型，那么式（1）中的问题就变成了：</p>
-<p>​                                                                      ${\underset {w\in R^d}{min}}F(w):=\frac{1}{n}\sum_{i=1}^nf_i(w-\alpha \nabla f_i(w))$       (3)</p>
-<p>这样不仅保持了联邦学习的优点，也捕获了不同参与方之间的区别。这样式（3）求得的解决方案就可以作为初始模型分发给各个参与方，各个参与方在此基础上依据本地数据进行较少的训练更新步骤就可以获取一个适合自己的数据集的模型。</p>
-<h2 id="个性化联邦学习算法：Per-Fedavg"><a href="#个性化联邦学习算法：Per-Fedavg" class="headerlink" title="个性化联邦学习算法：Per-Fedavg"></a>个性化联邦学习算法：Per-Fedavg</h2><p>式（3）中的$F$可以写作元函数$F_1,F_2,…,F_n$的平均，其中元函数$F_i$代表参与方$i$的元函数：</p>
-<p>​                                                                  $F_i(w):=f_i(w-\alpha \nabla f_i(w))$              (4)</p>
-<p>类似于FedAvg，第一步是各个参与方计算本地元函数的梯度：</p>
-<p>​                                                                $\nabla F_i(w)=(I-\alpha \nabla ^2f_i(w))\nabla f_i(w-\alpha \nabla f_i(w))$        （5）</p>
-<p>但是每一轮都计算$\nabla f_i(w)$代价很高，这里取一批关于分布$p_i$的数据$D^i$，得到一个无偏估计：</p>
-<p>​                                                                $\widetilde \nabla f_i(w,D^i):=\frac{1}{|D^i|}\sum_{(x,y)\in D^i}\nabla l_i(w;x,y)$           （6）</p>
-<p>同理，式（5）中的$\nabla ^2f_i(w)$可以用$\widetilde \nabla ^2f_i(w,D^i)$代替。</p>
-<p>在Per-FedAvg的第k轮，类似于FedAVg，服务器将当前的全局模型发送给随机选择的一批参与方（也可以是全部参与方）$A_k$，每一个被选中的参与方都要在本地执行$\tau$个更新步骤，这样每个参与方都会生产一个本地模型参数序列$\{w^i_{k+1,t}\}^\tau _{t=0}$，其中$w_{k+1,0}^i=w_k$，并且满足$\tau \geq t\geq 1$  ：</p>
-<p>​                                                                        $w_{k+1,t}^i=w_{k+1,t-1}^i-\beta \widetilde{\nabla}F_i(w_{k+1,t-1}^i)$        （7）</p>
-<p>注意，所有局部迭代的$\widetilde{\nabla}F_i(w_{k+1,t-1}^i)$是使用互相独立的批次$D_t^i,D_t^{\prime i},D_t^{\prime \prime i}$计算的：</p>
-<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/1.png" class="">
-<p>然后被选中的参与方将结果发送给服务器，服务器对收到的模型进行平均，获得全局模型$w_{k+1}=\frac{1}{|A_k|}\sum_{i\in A_k}w_{k+1,\tau}^i$。Per-FedAVg算法的伪代码如下图：</p>
-<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/2.png" class="">
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>实验部分就不再赘述了，具体细节见论文原文。这里贴上实验结果。</p>
-<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/3.png" class="">
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>这篇论文的作者提出的个性化联邦学习很有想法，值得我们学习，毕竟联邦学习大多数时候各个参与方的本地数据分布就是差异性极大，个性化联邦学习专门迎合这个问题，并尝试解决它。</p>
-]]></content>
-      <categories>
-        <category>联邦学习</category>
-      </categories>
-      <tags>
-        <tag>联邦学习</tag>
-        <tag>元学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>小小酥的每日学习小结（1）</title>
     <url>/2021/04/04/%E5%B0%8F%E5%B0%8F%E9%85%A5%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%881%EF%BC%89/</url>
     <content><![CDATA[<p>小小酥备战事业单位考试的学习总结第一天。</p>
@@ -171,6 +131,46 @@
       <tags>
         <tag>小小酥</tag>
         <tag>每日总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>个性化联邦学习：Personalized Federated Learning</title>
+    <url>/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/</url>
+    <content><![CDATA[<p>今日调研了Alireza Fallah等人提出的个性化联邦学习，<a href="https://arxiv.org/abs/2002.07948">论文链接</a></p>
+<span id="more"></span>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在联邦学习场景中，存在$n$个参与方和一个服务器，其中每个参与方都只能访问自己本地的数据样本，利用本地数据样本训练本地模型，再将本地模型参数上传至服务器，服务器收到所有进行本地训练的参与方的本地模型参数后，对其进行聚合（往往是加权平均）获得全局模型参数，再将其广播给所有的参与方，进行下一轮训练。将$f_i:R^d\rightarrow R$作为参与方$i$的损失函数，那么联邦学习的目标就是：</p>
+<p>​                                                                              ${\underset {w\in R^d}{min}}f(w):=\frac{1}{n}\sum_{i=1}^nf_i(w)$           (1)</p>
+<p>对于监督学习，$f_i$可以代表参与方$i$的本地数据分布上的期望损失：</p>
+<p>​                                                                              $f_i(w):=E_{(x,y)\sim p_i}[l_i(w;x,y)]$        (2)</p>
+<p>其中$l_i(w;x,y)$代表模型$w$在预测标签为$y$的样本$x$时造成的损失，$p_i$是用户$i$的数据分布。在数据异构性强的设定下不同参与方的本地数据的分布是互不相同的。那么$f_i(w)$同样可以写作$f_i(w)=\sum_{(x,y)\in S_i}p_i(x,y)l_i(w;x,y)$，其中$S_i$代表参与方$i$的本地数据集，$p_i(x,y)$代表该样本在参与方$i$的本地数据集被采样的概率。</p>
+<p>这样子最后获得的全局模型并不能适用于每个用户，特别是在用户的底层数据分布不相同的异构设置中，通过最小化平均损失获得的全局模型一旦应用到每个用户的本地数据集上，可能会执行得很糟糕。换句话说，式（1）给出的解决方案并不是针对每个用户的个性化，不能完全实现特定于用户的模型。</p>
+<p>故而本文作者提出了个性化联邦学习，其目标是找到一个所有参与方共享的初始点，每个参与方依据其自身的损失函数更新这个初始点，执行比较少的梯度更新步骤就可以表现良好。这样，虽然初始模型在所有参与方中一致，但每个参与方实现的最终模型根据其本地数据的不同而不同。作者研究了FedAvg算法的变体——Per-FedAvg，用于解决个性化联邦学习问题。</p>
+<h2 id="通过MAML进行个性化联邦学习"><a href="#通过MAML进行个性化联邦学习" class="headerlink" title="通过MAML进行个性化联邦学习"></a>通过MAML进行个性化联邦学习</h2><p>首先回顾MAML。与传统的监督学习设置不同，在MAML中，给定一组从基础分布中抽取的任务，目标不是找到一个在预期的所有任务上都表现良好的模型，而是找到一个初始化模型，它基于新的任务在经过较少的训练更新步骤之后，在该任务上表现良好。特别地，作者假设联邦学习中每个参与方都取这个初始点，并根据自身的损失函数更新一次模型，那么式（1）中的问题就变成了：</p>
+<p>​                                                                      ${\underset {w\in R^d}{min}}F(w):=\frac{1}{n}\sum_{i=1}^nf_i(w-\alpha \nabla f_i(w))$       (3)</p>
+<p>这样不仅保持了联邦学习的优点，也捕获了不同参与方之间的区别。这样式（3）求得的解决方案就可以作为初始模型分发给各个参与方，各个参与方在此基础上依据本地数据进行较少的训练更新步骤就可以获取一个适合自己的数据集的模型。</p>
+<h2 id="个性化联邦学习算法：Per-Fedavg"><a href="#个性化联邦学习算法：Per-Fedavg" class="headerlink" title="个性化联邦学习算法：Per-Fedavg"></a>个性化联邦学习算法：Per-Fedavg</h2><p>式（3）中的$F$可以写作元函数$F_1,F_2,…,F_n$的平均，其中元函数$F_i$代表参与方$i$的元函数：</p>
+<p>​                                                                  $F_i(w):=f_i(w-\alpha \nabla f_i(w))$              (4)</p>
+<p>类似于FedAvg，第一步是各个参与方计算本地元函数的梯度：</p>
+<p>​                                                                $\nabla F_i(w)=(I-\alpha \nabla ^2f_i(w))\nabla f_i(w-\alpha \nabla f_i(w))$        （5）</p>
+<p>但是每一轮都计算$\nabla f_i(w)$代价很高，这里取一批关于分布$p_i$的数据$D^i$，得到一个无偏估计：</p>
+<p>​                                                                $\widetilde \nabla f_i(w,D^i):=\frac{1}{|D^i|}\sum_{(x,y)\in D^i}\nabla l_i(w;x,y)$           （6）</p>
+<p>同理，式（5）中的$\nabla ^2f_i(w)$可以用$\widetilde \nabla ^2f_i(w,D^i)$代替。</p>
+<p>在Per-FedAvg的第k轮，类似于FedAVg，服务器将当前的全局模型发送给随机选择的一批参与方（也可以是全部参与方）$A_k$，每一个被选中的参与方都要在本地执行$\tau$个更新步骤，这样每个参与方都会生产一个本地模型参数序列$\{w^i_{k+1,t}\}^\tau _{t=0}$，其中$w_{k+1,0}^i=w_k$，并且满足$\tau \geq t\geq 1$  ：</p>
+<p>​                                                                        $w_{k+1,t}^i=w_{k+1,t-1}^i-\beta \widetilde{\nabla}F_i(w_{k+1,t-1}^i)$        （7）</p>
+<p>注意，所有局部迭代的$\widetilde{\nabla}F_i(w_{k+1,t-1}^i)$是使用互相独立的批次$D_t^i,D_t^{\prime i},D_t^{\prime \prime i}$计算的：</p>
+<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/1.png" class="">
+<p>然后被选中的参与方将结果发送给服务器，服务器对收到的模型进行平均，获得全局模型$w_{k+1}=\frac{1}{|A_k|}\sum_{i\in A_k}w_{k+1,\tau}^i$。Per-FedAVg算法的伪代码如下图：</p>
+<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/2.png" class="">
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>实验部分就不再赘述了，具体细节见论文原文。这里贴上实验结果。</p>
+<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/3.png" class="">
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>这篇论文的作者提出的个性化联邦学习很有想法，值得我们学习，毕竟联邦学习大多数时候各个参与方的本地数据分布就是差异性极大，个性化联邦学习专门迎合这个问题，并尝试解决它。</p>
+]]></content>
+      <categories>
+        <category>联邦学习</category>
+      </categories>
+      <tags>
+        <tag>联邦学习</tag>
+        <tag>元学习</tag>
       </tags>
   </entry>
   <entry>
