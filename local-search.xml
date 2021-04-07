@@ -4,11 +4,65 @@
   
   
   <entry>
+    <title>强化学习gym任务：Pendulum源码分析</title>
+    <link href="/2021/04/07/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0gym%E4%BB%BB%E5%8A%A1%EF%BC%9APendulum/"/>
+    <url>/2021/04/07/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0gym%E4%BB%BB%E5%8A%A1%EF%BC%9APendulum/</url>
+    
+    <content type="html"><![CDATA[<p>该任务是OpenAI Gym的environment之一，<a href="http://gym.openai.com/envs/Pendulum-v0/">官网关于该任务的链接</a></p><span id="more"></span><p>Pendulum的目标是将一个一端固定的直杆通过施加力矩使其可以荡到顶并保持直立。</p><img src="/2021/04/07/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0gym%E4%BB%BB%E5%8A%A1%EF%BC%9APendulum/1.png" class=""><h2 id="Pendulum源代码的初始化"><a href="#Pendulum源代码的初始化" class="headerlink" title="Pendulum源代码的初始化"></a>Pendulum源代码的初始化</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, g=<span class="hljs-number">10.0</span></span>):</span><br>       self.max_speed = <span class="hljs-number">8</span>   <span class="hljs-comment"># 最大速度</span><br>       self.max_torque = <span class="hljs-number">2.</span>  <span class="hljs-comment"># 最大力矩</span><br>       self.dt = <span class="hljs-number">.05</span>  <span class="hljs-comment"># 微分时间，可以理解为执行一次step需要的时间，用来和角加速度乘法</span><br>       self.g = g     <span class="hljs-comment"># 重力加速度，默认为10.0</span><br>       self.m = <span class="hljs-number">1.</span>    <span class="hljs-comment"># 杆子质量（个人感觉这里也可以理解为密度），默认为1.0</span><br>       self.l = <span class="hljs-number">1.</span>    <span class="hljs-comment"># 杆子长度，默认为1.0</span><br>       self.viewer = <span class="hljs-literal">None</span><br><br>       high = np.array([<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>, self.max_speed], dtype=np.float32)<br>       self.action_space = spaces.Box(<br>           low=-self.max_torque,<br>           high=self.max_torque, shape=(<span class="hljs-number">1</span>,),<br>           dtype=np.float32<br>       )<br>       self.observation_space = spaces.Box(<br>           low=-high,<br>           high=high,<br>           dtype=np.float32<br>       )<br><br>       self.seed()<br></code></pre></td></tr></table></figure><p>这里的action_space代表力矩，-2～2的连续值</p><p>这里的observation_space是一个元组：(cos(theta), sin(theta), thetadot角速度)    theta代表偏转角度，这是由下面的方法得知的：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset</span>(<span class="hljs-params">self</span>):</span><br>  high = np.array([np.pi, <span class="hljs-number">1</span>])<br>  self.state = self.np_random.uniform(low=-high, high=high)<br>  self.last_u = <span class="hljs-literal">None</span><br>  <span class="hljs-keyword">return</span> self._get_obs()<br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_get_obs</span>(<span class="hljs-params">self</span>):</span><br>  theta, thetadot = self.state<br>  <span class="hljs-keyword">return</span> np.array([np.cos(theta), np.sin(theta), thetadot])<br></code></pre></td></tr></table></figure><h2 id="Pendulum源代码的动作执行"><a href="#Pendulum源代码的动作执行" class="headerlink" title="Pendulum源代码的动作执行"></a>Pendulum源代码的动作执行</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">step</span>(<span class="hljs-params">self, u</span>):</span><br>        th, thdot = self.state  <span class="hljs-comment"># th := theta</span><br><br>        g = self.g<br>        m = self.m<br>        l = self.l<br>        dt = self.dt<br><br>        u = np.clip(u, -self.max_torque, self.max_torque)[<span class="hljs-number">0</span>]<br>        self.last_u = u  <span class="hljs-comment"># for rendering</span><br>        costs = angle_normalize(th) ** <span class="hljs-number">2</span> + <span class="hljs-number">.1</span> * thdot ** <span class="hljs-number">2</span> + <span class="hljs-number">.001</span> * (u ** <span class="hljs-number">2</span>)<br>        <span class="hljs-comment"># costs在末尾取相反数用作奖励，可见这个任务希望奖励数值越低越好</span><br>        newthdot = thdot + (-<span class="hljs-number">3</span> * g / (<span class="hljs-number">2</span> * l) * np.sin(th + np.pi) + <span class="hljs-number">3.</span> / (m * l ** <span class="hljs-number">2</span>) * u) * dt<br>        newth = th + newthdot * dt<br>        newthdot = np.clip(newthdot, -self.max_speed, self.max_speed)<br><br>        self.state = np.array([newth, newthdot])<br>        <span class="hljs-keyword">return</span> self._get_obs(), -costs, <span class="hljs-literal">False</span>, &#123;&#125;<br></code></pre></td></tr></table></figure><p>第17行定义了<strong>self.state</strong>：(theta, thetadot)    前者代表当前偏转角度，后者代表当前角速度</p><p>由13行可见，可以更改的参数是<strong>self.m</strong>和<strong>self.l</strong>，这两者修改哪个应该是都可以的，因为它们在<strong>step</strong>函数中仅出现一次，且是相乘，修改哪个都是一样的，可以理解为修改了杆子长度，这样可以使得该任务更泛化。</p><h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><p>要完成这个任务的关键在于这是一个连续动作任务，而非离散动作。使用DQN或其他方法都可以。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>强化学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>强化学习</tag>
+      
+      <tag>gym</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>小小酥的每日学习小结（4）</title>
+    <link href="/2021/04/07/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%884%EF%BC%89/"/>
+    <url>/2021/04/07/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%884%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[<p>今天是小小酥备战事业单位考试的第二天。</p><span id="more"></span><h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>政治完结，今天着重整理政治笔记&amp;刷了部分题</p><p>开始学习经济板块</p><h2 id="一、政治刷题进度"><a href="#一、政治刷题进度" class="headerlink" title="一、政治刷题进度"></a>一、政治刷题进度</h2><ul><li>党史&amp;党建，159/544</li><li>毛思，120/218</li><li>邓论（未开始）</li></ul><h2 id="二、经济基原"><a href="#二、经济基原" class="headerlink" title="二、经济基原"></a>二、经济基原</h2><h3 id="1-市场的含义"><a href="#1-市场的含义" class="headerlink" title="1.市场的含义"></a>1.市场的含义</h3><ul><li>场所</li><li>支付能力的需求</li><li>交换关系</li></ul><h3 id="2-市场的要素"><a href="#2-市场的要素" class="headerlink" title="2.市场的要素"></a>2.市场的要素</h3><ul><li>主体（人），3类</li><li>客体（商品），2类</li><li>行为，3种</li><li>秩序（是前提）</li></ul><h3 id="3-市场经济含"><a href="#3-市场经济含" class="headerlink" title="3.市场经济含"></a>3.市场经济含</h3><ul><li>根源</li><li>含义</li><li>发展过程 （3个）</li><li>阶段（2个）</li><li>与商品经济的关系</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>小小酥事业单位考试</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>小小酥</tag>
+      
+      <tag>每日总结</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>小小酥的每日学习小结（3）</title>
     <link href="/2021/04/06/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%883%EF%BC%89/"/>
     <url>/2021/04/06/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%883%EF%BC%89/</url>
     
-    <content type="html"><![CDATA[<p>今天是小小酥备战事业单位考试的第二天。</p><span id="more"></span><h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><h2 id="一、邓论（完结）"><a href="#一、邓论（完结）" class="headerlink" title="一、邓论（完结）"></a>一、邓论（完结）</h2><h2 id="1-邓论-开放"><a href="#1-邓论-开放" class="headerlink" title="1.邓论-开放"></a>1.邓论-开放</h2><p>格局：全方位、多层次、宽领域（立体化，19大）</p><ol><li>中现代化建设的国际环境</li><li>对外开放是我国的基本国策</li><li>独立自主是我国的和平外交政策</li><li>外交战略变化过程</li></ol><h2 id="2-邓论-军队"><a href="#2-邓论-军队" class="headerlink" title="2.邓论-军队"></a>2.邓论-军队</h2><p>现代化、正规化、革命化（现正革）</p><p>战略方正：积极防御</p><p>历史课题：“打得赢、不变质”</p><h2 id="3-邓论-一国两制"><a href="#3-邓论-一国两制" class="headerlink" title="3.邓论-一国两制"></a>3.邓论-一国两制</h2><ol><li>一国两制的形成&amp;发展</li><li>一国两制的基本内容（4点）</li><li>一国两制的成功实践（3点）</li><li>解决台湾问题的原则（4点）</li></ol><h2 id="4-邓论-依靠-amp-领导"><a href="#4-邓论-依靠-amp-领导" class="headerlink" title="4.邓论-依靠&amp;领导"></a>4.邓论-依靠&amp;领导</h2><h3 id="1-人民群众是社主的依靠力量"><a href="#1-人民群众是社主的依靠力量" class="headerlink" title="1)人民群众是社主的依靠力量"></a>1)人民群众是社主的依靠力量</h3><p>工农知识分子、各族人民团结、爱国统一战线、人民军队</p><h3 id="2-共产党是社主的领导核心"><a href="#2-共产党是社主的领导核心" class="headerlink" title="2)共产党是社主的领导核心"></a>2)共产党是社主的领导核心</h3><p>领导方式：（3）</p><p>执政方式：（3）</p><h3 id="3-按“三个代表”加强-amp-改进党的建设"><a href="#3-按“三个代表”加强-amp-改进党的建设" class="headerlink" title="3)按“三个代表”加强&amp;改进党的建设"></a>3)按“三个代表”加强&amp;改进党的建设</h3><h2 id="5-邓论-历史地位-amp-指导意义"><a href="#5-邓论-历史地位-amp-指导意义" class="headerlink" title="5.邓论-历史地位&amp;指导意义"></a>5.邓论-历史地位&amp;指导意义</h2><h2 id="二、三个代表"><a href="#二、三个代表" class="headerlink" title="二、三个代表"></a>二、三个代表</h2><p>2000年，广东，首次提出</p><h3 id="1-形成条件"><a href="#1-形成条件" class="headerlink" title="1.形成条件"></a>1.形成条件</h3><ul><li>历史根据</li><li>时代背景</li><li>现实依据</li></ul><h3 id="2-形成过程"><a href="#2-形成过程" class="headerlink" title="2.形成过程"></a>2.形成过程</h3><h3 id="3-历史地位-amp-之道意义"><a href="#3-历史地位-amp-之道意义" class="headerlink" title="3.历史地位&amp;之道意义"></a>3.历史地位&amp;之道意义</h3><h2 id="三、科学发展观"><a href="#三、科学发展观" class="headerlink" title="三、科学发展观"></a>三、科学发展观</h2><p>2003年，江西，明确使用</p><p>十七大写入党章</p><p>十八大作为党的指导细想写入党章</p>]]></content>
+    <content type="html"><![CDATA[<p>今天是小小酥备战事业单位考试的第三天。</p><span id="more"></span><h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><h2 id="一、邓论（完结）"><a href="#一、邓论（完结）" class="headerlink" title="一、邓论（完结）"></a>一、邓论（完结）</h2><h2 id="1-邓论-开放"><a href="#1-邓论-开放" class="headerlink" title="1.邓论-开放"></a>1.邓论-开放</h2><p>格局：全方位、多层次、宽领域（立体化，19大）</p><ol><li>中现代化建设的国际环境</li><li>对外开放是我国的基本国策</li><li>独立自主是我国的和平外交政策</li><li>外交战略变化过程</li></ol><h2 id="2-邓论-军队"><a href="#2-邓论-军队" class="headerlink" title="2.邓论-军队"></a>2.邓论-军队</h2><p>现代化、正规化、革命化（现正革）</p><p>战略方正：积极防御</p><p>历史课题：“打得赢、不变质”</p><h2 id="3-邓论-一国两制"><a href="#3-邓论-一国两制" class="headerlink" title="3.邓论-一国两制"></a>3.邓论-一国两制</h2><ol><li>一国两制的形成&amp;发展</li><li>一国两制的基本内容（4点）</li><li>一国两制的成功实践（3点）</li><li>解决台湾问题的原则（4点）</li></ol><h2 id="4-邓论-依靠-amp-领导"><a href="#4-邓论-依靠-amp-领导" class="headerlink" title="4.邓论-依靠&amp;领导"></a>4.邓论-依靠&amp;领导</h2><h3 id="1-人民群众是社主的依靠力量"><a href="#1-人民群众是社主的依靠力量" class="headerlink" title="1)人民群众是社主的依靠力量"></a>1)人民群众是社主的依靠力量</h3><p>工农知识分子、各族人民团结、爱国统一战线、人民军队</p><h3 id="2-共产党是社主的领导核心"><a href="#2-共产党是社主的领导核心" class="headerlink" title="2)共产党是社主的领导核心"></a>2)共产党是社主的领导核心</h3><p>领导方式：（3）</p><p>执政方式：（3）</p><h3 id="3-按“三个代表”加强-amp-改进党的建设"><a href="#3-按“三个代表”加强-amp-改进党的建设" class="headerlink" title="3)按“三个代表”加强&amp;改进党的建设"></a>3)按“三个代表”加强&amp;改进党的建设</h3><h2 id="5-邓论-历史地位-amp-指导意义"><a href="#5-邓论-历史地位-amp-指导意义" class="headerlink" title="5.邓论-历史地位&amp;指导意义"></a>5.邓论-历史地位&amp;指导意义</h2><h2 id="二、三个代表"><a href="#二、三个代表" class="headerlink" title="二、三个代表"></a>二、三个代表</h2><p>2000年，广东，首次提出</p><h3 id="1-形成条件"><a href="#1-形成条件" class="headerlink" title="1.形成条件"></a>1.形成条件</h3><ul><li>历史根据</li><li>时代背景</li><li>现实依据</li></ul><h3 id="2-形成过程"><a href="#2-形成过程" class="headerlink" title="2.形成过程"></a>2.形成过程</h3><h3 id="3-历史地位-amp-之道意义"><a href="#3-历史地位-amp-之道意义" class="headerlink" title="3.历史地位&amp;之道意义"></a>3.历史地位&amp;之道意义</h3><h2 id="三、科学发展观"><a href="#三、科学发展观" class="headerlink" title="三、科学发展观"></a>三、科学发展观</h2><p>2003年，江西，明确使用</p><p>十七大写入党章</p><p>十八大作为党的指导细想写入党章</p>]]></content>
     
     
     <categories>
