@@ -56,6 +56,18 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
       </categories>
   </entry>
   <entry>
+    <title>hello-blog</title>
+    <url>/2021/03/21/hello-blog/</url>
+    <content><![CDATA[<p>打今儿起，我也终于有自己的博客啦！</p>
+]]></content>
+      <categories>
+        <category>啥也不是</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2021/03/21/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -111,15 +123,44 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
       </tags>
   </entry>
   <entry>
-    <title>hello-blog</title>
-    <url>/2021/03/21/hello-blog/</url>
-    <content><![CDATA[<p>打今儿起，我也终于有自己的博客啦！</p>
+    <title>小小酥的每日学习小结（1）</title>
+    <url>/2021/04/04/%E5%B0%8F%E5%B0%8F%E9%85%A5%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%881%EF%BC%89/</url>
+    <content><![CDATA[<p>小小酥备战事业单位考试的学习总结第一天。</p>
+<span id="more"></span>
+<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><h2 id="1-党建"><a href="#1-党建" class="headerlink" title="1.党建"></a>1.党建</h2><ol>
+<li><p>党的性质、指导思想、宗旨</p>
+</li>
+<li><p>党的纲领&amp;路线</p>
+</li>
+<li><p>党的思想、组织、制度、作风、反腐倡廉</p>
+</li>
+<li><p>党的纪律&amp;统一团结</p>
+</li>
+<li><p>党&amp;党员</p>
+</li>
+</ol>
+<h2 id="2-毛思"><a href="#2-毛思" class="headerlink" title="2.毛思"></a>2.毛思</h2><p>1.毛思形成的5个历史条件</p>
+<p>2.毛思的四个阶段</p>
+<p>每个阶段包含时期、著作、标志</p>
+<ul>
+<li>萌芽 </li>
+<li>形成</li>
+<li>成熟</li>
+<li>发展</li>
+</ul>
+<h2 id="3-邓论"><a href="#3-邓论" class="headerlink" title="3.邓论"></a>3.邓论</h2><ol>
+<li><p>邓论形成的4个历史条件</p>
+</li>
+<li><p>邓论形成&amp;发展的4个过程</p>
+</li>
+</ol>
 ]]></content>
       <categories>
-        <category>啥也不是</category>
+        <category>小小酥事业单位考试</category>
       </categories>
       <tags>
-        <tag>测试</tag>
+        <tag>小小酥</tag>
+        <tag>每日总结</tag>
       </tags>
   </entry>
   <entry>
@@ -188,147 +229,6 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
       </tags>
   </entry>
   <entry>
-    <title>小小酥的每日学习小结（4）</title>
-    <url>/2021/04/07/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%884%EF%BC%89/</url>
-    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第四天。</p>
-<span id="more"></span>
-<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>政治完结，今天着重整理政治笔记&amp;刷了部分题</p>
-<p>开始学习经济板块</p>
-<h2 id="一、政治刷题进度"><a href="#一、政治刷题进度" class="headerlink" title="一、政治刷题进度"></a>一、政治刷题进度</h2><ul>
-<li>党史&amp;党建，159/544</li>
-<li>毛思，120/218</li>
-<li>邓论（未开始）</li>
-</ul>
-<h2 id="二、经济基原"><a href="#二、经济基原" class="headerlink" title="二、经济基原"></a>二、经济基原</h2><h3 id="1-市场的含义"><a href="#1-市场的含义" class="headerlink" title="1.市场的含义"></a>1.市场的含义</h3><ul>
-<li>场所</li>
-<li>支付能力的需求</li>
-<li>交换关系</li>
-</ul>
-<h3 id="2-市场的要素"><a href="#2-市场的要素" class="headerlink" title="2.市场的要素"></a>2.市场的要素</h3><ul>
-<li>主体（人），3类</li>
-<li>客体（商品），2类</li>
-<li>行为，3种</li>
-<li>秩序（是前提）</li>
-</ul>
-<h3 id="3-市场经济含"><a href="#3-市场经济含" class="headerlink" title="3.市场经济含"></a>3.市场经济含</h3><ul>
-<li>根源</li>
-<li>含义</li>
-<li>发展过程 （3个）</li>
-<li>阶段（2个）</li>
-<li>与商品经济的关系</li>
-</ul>
-]]></content>
-      <categories>
-        <category>小小酥事业单位考试</category>
-      </categories>
-      <tags>
-        <tag>小小酥</tag>
-        <tag>每日总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>小小酥的每日学习小结（1）</title>
-    <url>/2021/04/04/%E5%B0%8F%E5%B0%8F%E9%85%A5%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%881%EF%BC%89/</url>
-    <content><![CDATA[<p>小小酥备战事业单位考试的学习总结第一天。</p>
-<span id="more"></span>
-<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><h2 id="1-党建"><a href="#1-党建" class="headerlink" title="1.党建"></a>1.党建</h2><ol>
-<li><p>党的性质、指导思想、宗旨</p>
-</li>
-<li><p>党的纲领&amp;路线</p>
-</li>
-<li><p>党的思想、组织、制度、作风、反腐倡廉</p>
-</li>
-<li><p>党的纪律&amp;统一团结</p>
-</li>
-<li><p>党&amp;党员</p>
-</li>
-</ol>
-<h2 id="2-毛思"><a href="#2-毛思" class="headerlink" title="2.毛思"></a>2.毛思</h2><p>1.毛思形成的5个历史条件</p>
-<p>2.毛思的四个阶段</p>
-<p>每个阶段包含时期、著作、标志</p>
-<ul>
-<li>萌芽 </li>
-<li>形成</li>
-<li>成熟</li>
-<li>发展</li>
-</ul>
-<h2 id="3-邓论"><a href="#3-邓论" class="headerlink" title="3.邓论"></a>3.邓论</h2><ol>
-<li><p>邓论形成的4个历史条件</p>
-</li>
-<li><p>邓论形成&amp;发展的4个过程</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>小小酥事业单位考试</category>
-      </categories>
-      <tags>
-        <tag>小小酥</tag>
-        <tag>每日总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>小小酥的每日学习小结（6）</title>
-    <url>/2021/04/09/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%886%EF%BC%89/</url>
-    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第六天。</p>
-<span id="more"></span>
-<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><h2 id="一、社会主义市场经济"><a href="#一、社会主义市场经济" class="headerlink" title="一、社会主义市场经济"></a>一、社会主义市场经济</h2><p>1.公有制：国有、集体、混合所有制中国有、集体成分</p>
-<p>2.多种所有制=非公有：个体、私营、外资（中外合资、中外合作、外商独资）</p>
-<h3 id="1、建立“社主市场经济”体制的原因"><a href="#1、建立“社主市场经济”体制的原因" class="headerlink" title="1、建立“社主市场经济”体制的原因"></a>1、建立“社主市场经济”体制的原因</h3><p>市场经济的根本特征：促进生产的专业化、社会化—&gt;扩大&amp;加深社会分工</p>
-<h3 id="2、“社主市场经济”基本特征（4）"><a href="#2、“社主市场经济”基本特征（4）" class="headerlink" title="2、“社主市场经济”基本特征（4）"></a>2、“社主市场经济”基本特征（4）</h3><p>和资本主义市场经济相比较</p>
-<ul>
-<li>所有制：公有制为主体，多种所有制共同发展</li>
-<li>目的：满足日益增长的物质、美好需求</li>
-<li>分配方式：按劳分配&amp;生产要素（效率&amp;公平）</li>
-<li>宏观调控：国际、集体、个人根本利益一致</li>
-</ul>
-<h2 id="二、现代化企业"><a href="#二、现代化企业" class="headerlink" title="二、现代化企业"></a>二、现代化企业</h2><h3 id="1、企业的含义"><a href="#1、企业的含义" class="headerlink" title="1、企业的含义"></a>1、企业的含义</h3><p>盈利目的+社会经济组织</p>
-<h3 id="2、企业的地位"><a href="#2、企业的地位" class="headerlink" title="2、企业的地位"></a>2、企业的地位</h3><p>最重要的市场主体</p>
-<h3 id="3、市场主体的分类"><a href="#3、市场主体的分类" class="headerlink" title="3、市场主体的分类"></a>3、市场主体的分类</h3><ul>
-<li>微观基础（5）</li>
-<li>主要主体（3）</li>
-<li>最主要主体（1）</li>
-</ul>
-<h3 id="4、企业成为市场主体的基本条件（3）"><a href="#4、企业成为市场主体的基本条件（3）" class="headerlink" title="4、企业成为市场主体的基本条件（3）"></a>4、企业成为市场主体的基本条件（3）</h3><ul>
-<li>明确产权（有钱）</li>
-<li>能自主经营</li>
-<li>企业间地位平等</li>
-</ul>
-<h3 id="5、企业的分类"><a href="#5、企业的分类" class="headerlink" title="5、企业的分类"></a>5、企业的分类</h3><h4 id="1）所有权性质不同（3）"><a href="#1）所有权性质不同（3）" class="headerlink" title="1）所有权性质不同（3）"></a>1）所有权性质不同（3）</h4><ul>
-<li>国有企业</li>
-<li>集体企业</li>
-<li>外资企业/三资企业</li>
-</ul>
-<h4 id="2）企业组织类型不同（3）"><a href="#2）企业组织类型不同（3）" class="headerlink" title="2）企业组织类型不同（3）"></a>2）企业组织类型不同（3）</h4><ul>
-<li>业主制企业（1自然人）</li>
-<li>合伙制企业（&gt;=2自然人）</li>
-<li>公司制企业（法人：有限or股份）</li>
-</ul>
-<h4 id="3）我国法律规定-amp-确认的企业类型（8）"><a href="#3）我国法律规定-amp-确认的企业类型（8）" class="headerlink" title="3）我国法律规定&amp;确认的企业类型（8）"></a>3）我国法律规定&amp;确认的企业类型（8）</h4><p>8种企业<br>2种公司</p>
-<ol>
-<li>有限责任公司</li>
-<li>国有独资公司（特殊的有限）</li>
-<li>股份有限公司（可上市）</li>
-<li>中外合资企业=股权式合资</li>
-<li>外商独资企业</li>
-</ol>
-<p>上述有法人资格，有限责任</p>
-<ol>
-<li>个人独自企业</li>
-<li>合伙企业</li>
-<li>中外合作经营企业=契约式合作</li>
-</ol>
-<p>上述无法人资格，无限责任</p>
-]]></content>
-      <categories>
-        <category>小小酥事业单位考试</category>
-      </categories>
-      <tags>
-        <tag>小小酥</tag>
-        <tag>每日总结</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>小小酥的每日学习小结（3）</title>
     <url>/2021/04/06/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%883%EF%BC%89/</url>
     <content><![CDATA[<p>今天是小小酥备战事业单位考试的第三天。</p>
@@ -361,6 +261,45 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
 <h3 id="2-形成过程"><a href="#2-形成过程" class="headerlink" title="2.形成过程"></a>2.形成过程</h3><h3 id="3-历史地位-amp-之道意义"><a href="#3-历史地位-amp-之道意义" class="headerlink" title="3.历史地位&amp;之道意义"></a>3.历史地位&amp;之道意义</h3><h2 id="三、科学发展观"><a href="#三、科学发展观" class="headerlink" title="三、科学发展观"></a>三、科学发展观</h2><p>2003年，江西，明确使用</p>
 <p>十七大写入党章</p>
 <p>十八大作为党的指导细想写入党章</p>
+]]></content>
+      <categories>
+        <category>小小酥事业单位考试</category>
+      </categories>
+      <tags>
+        <tag>小小酥</tag>
+        <tag>每日总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小小酥的每日学习小结（4）</title>
+    <url>/2021/04/07/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%884%EF%BC%89/</url>
+    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第四天。</p>
+<span id="more"></span>
+<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>政治完结，今天着重整理政治笔记&amp;刷了部分题</p>
+<p>开始学习经济板块</p>
+<h2 id="一、政治刷题进度"><a href="#一、政治刷题进度" class="headerlink" title="一、政治刷题进度"></a>一、政治刷题进度</h2><ul>
+<li>党史&amp;党建，159/544</li>
+<li>毛思，120/218</li>
+<li>邓论（未开始）</li>
+</ul>
+<h2 id="二、经济基原"><a href="#二、经济基原" class="headerlink" title="二、经济基原"></a>二、经济基原</h2><h3 id="1-市场的含义"><a href="#1-市场的含义" class="headerlink" title="1.市场的含义"></a>1.市场的含义</h3><ul>
+<li>场所</li>
+<li>支付能力的需求</li>
+<li>交换关系</li>
+</ul>
+<h3 id="2-市场的要素"><a href="#2-市场的要素" class="headerlink" title="2.市场的要素"></a>2.市场的要素</h3><ul>
+<li>主体（人），3类</li>
+<li>客体（商品），2类</li>
+<li>行为，3种</li>
+<li>秩序（是前提）</li>
+</ul>
+<h3 id="3-市场经济含"><a href="#3-市场经济含" class="headerlink" title="3.市场经济含"></a>3.市场经济含</h3><ul>
+<li>根源</li>
+<li>含义</li>
+<li>发展过程 （3个）</li>
+<li>阶段（2个）</li>
+<li>与商品经济的关系</li>
+</ul>
 ]]></content>
       <categories>
         <category>小小酥事业单位考试</category>
@@ -423,6 +362,67 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
 <li>邓小平南巡讲话</li>
 <li>十四大（确立）</li>
 </ul>
+]]></content>
+      <categories>
+        <category>小小酥事业单位考试</category>
+      </categories>
+      <tags>
+        <tag>小小酥</tag>
+        <tag>每日总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小小酥的每日学习小结（6）</title>
+    <url>/2021/04/09/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%886%EF%BC%89/</url>
+    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第六天。</p>
+<span id="more"></span>
+<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><h2 id="一、社会主义市场经济"><a href="#一、社会主义市场经济" class="headerlink" title="一、社会主义市场经济"></a>一、社会主义市场经济</h2><p>1.公有制：国有、集体、混合所有制中国有、集体成分</p>
+<p>2.多种所有制=非公有：个体、私营、外资（中外合资、中外合作、外商独资）</p>
+<h3 id="1、建立“社主市场经济”体制的原因"><a href="#1、建立“社主市场经济”体制的原因" class="headerlink" title="1、建立“社主市场经济”体制的原因"></a>1、建立“社主市场经济”体制的原因</h3><p>市场经济的根本特征：促进生产的专业化、社会化—&gt;扩大&amp;加深社会分工</p>
+<h3 id="2、“社主市场经济”基本特征（4）"><a href="#2、“社主市场经济”基本特征（4）" class="headerlink" title="2、“社主市场经济”基本特征（4）"></a>2、“社主市场经济”基本特征（4）</h3><p>和资本主义市场经济相比较</p>
+<ul>
+<li>所有制：公有制为主体，多种所有制共同发展</li>
+<li>目的：满足日益增长的物质、美好需求</li>
+<li>分配方式：按劳分配&amp;生产要素（效率&amp;公平）</li>
+<li>宏观调控：国际、集体、个人根本利益一致</li>
+</ul>
+<h2 id="二、现代化企业"><a href="#二、现代化企业" class="headerlink" title="二、现代化企业"></a>二、现代化企业</h2><h3 id="1、企业的含义"><a href="#1、企业的含义" class="headerlink" title="1、企业的含义"></a>1、企业的含义</h3><p>盈利目的+社会经济组织</p>
+<h3 id="2、企业的地位"><a href="#2、企业的地位" class="headerlink" title="2、企业的地位"></a>2、企业的地位</h3><p>最重要的市场主体</p>
+<h3 id="3、市场主体的分类"><a href="#3、市场主体的分类" class="headerlink" title="3、市场主体的分类"></a>3、市场主体的分类</h3><ul>
+<li>微观基础（5）</li>
+<li>主要主体（3）</li>
+<li>最主要主体（1）</li>
+</ul>
+<h3 id="4、企业成为市场主体的基本条件（3）"><a href="#4、企业成为市场主体的基本条件（3）" class="headerlink" title="4、企业成为市场主体的基本条件（3）"></a>4、企业成为市场主体的基本条件（3）</h3><ul>
+<li>明确产权（有钱）</li>
+<li>能自主经营</li>
+<li>企业间地位平等</li>
+</ul>
+<h3 id="5、企业的分类"><a href="#5、企业的分类" class="headerlink" title="5、企业的分类"></a>5、企业的分类</h3><h4 id="1）所有权性质不同（3）"><a href="#1）所有权性质不同（3）" class="headerlink" title="1）所有权性质不同（3）"></a>1）所有权性质不同（3）</h4><ul>
+<li>国有企业</li>
+<li>集体企业</li>
+<li>外资企业/三资企业</li>
+</ul>
+<h4 id="2）企业组织类型不同（3）"><a href="#2）企业组织类型不同（3）" class="headerlink" title="2）企业组织类型不同（3）"></a>2）企业组织类型不同（3）</h4><ul>
+<li>业主制企业（1自然人）</li>
+<li>合伙制企业（&gt;=2自然人）</li>
+<li>公司制企业（法人：有限or股份）</li>
+</ul>
+<h4 id="3）我国法律规定-amp-确认的企业类型（8）"><a href="#3）我国法律规定-amp-确认的企业类型（8）" class="headerlink" title="3）我国法律规定&amp;确认的企业类型（8）"></a>3）我国法律规定&amp;确认的企业类型（8）</h4><p>8种企业<br>2种公司</p>
+<ol>
+<li>有限责任公司</li>
+<li>国有独资公司（特殊的有限）</li>
+<li>股份有限公司（可上市）</li>
+<li>中外合资企业=股权式合资</li>
+<li>外商独资企业</li>
+</ol>
+<p>上述有法人资格，有限责任</p>
+<ol>
+<li>个人独自企业</li>
+<li>合伙企业</li>
+<li>中外合作经营企业=契约式合作</li>
+</ol>
+<p>上述无法人资格，无限责任</p>
 ]]></content>
       <categories>
         <category>小小酥事业单位考试</category>
