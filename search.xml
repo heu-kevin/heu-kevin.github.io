@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>hello-blog</title>
-    <url>/2021/03/21/hello-blog/</url>
-    <content><![CDATA[<p>打今儿起，我也终于有自己的博客啦！</p>
-]]></content>
-      <categories>
-        <category>啥也不是</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Multi-Arm Bandits问题</title>
     <url>/2021/04/10/Multi-Arm-Bandits%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p>Multi-Arm Bandits问题是从赌场中的多臂老虎机中提取的数学问题，可以使用强化学习来解决。本文参考于<a href="https://blog.csdn.net/coffee_cream/article/details/58034628">博客链接</a></p>
@@ -68,6 +56,18 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
       </categories>
   </entry>
   <entry>
+    <title>hello-blog</title>
+    <url>/2021/03/21/hello-blog/</url>
+    <content><![CDATA[<p>打今儿起，我也终于有自己的博客啦！</p>
+]]></content>
+      <categories>
+        <category>啥也不是</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2021/03/21/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -81,70 +81,6 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>个性化联邦学习：Personalized Federated Learning</title>
-    <url>/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/</url>
-    <content><![CDATA[<p>今日调研了Alireza Fallah等人提出的个性化联邦学习，<a href="https://arxiv.org/abs/2002.07948">论文链接</a></p>
-<span id="more"></span>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在联邦学习场景中，存在$n$个参与方和一个服务器，其中每个参与方都只能访问自己本地的数据样本，利用本地数据样本训练本地模型，再将本地模型参数上传至服务器，服务器收到所有进行本地训练的参与方的本地模型参数后，对其进行聚合（往往是加权平均）获得全局模型参数，再将其广播给所有的参与方，进行下一轮训练。将$f_i:R^d\rightarrow R$作为参与方$i$的损失函数，那么联邦学习的目标就是：</p>
-<p>​                                                                              ${\underset {w\in R^d}{min}}f(w):=\frac{1}{n}\sum_{i=1}^nf_i(w)$           (1)</p>
-<p>对于监督学习，$f_i$可以代表参与方$i$的本地数据分布上的期望损失：</p>
-<p>​                                                                              $f_i(w):=E_{(x,y)\sim p_i}[l_i(w;x,y)]$        (2)</p>
-<p>其中$l_i(w;x,y)$代表模型$w$在预测标签为$y$的样本$x$时造成的损失，$p_i$是用户$i$的数据分布。在数据异构性强的设定下不同参与方的本地数据的分布是互不相同的。那么$f_i(w)$同样可以写作$f_i(w)=\sum_{(x,y)\in S_i}p_i(x,y)l_i(w;x,y)$，其中$S_i$代表参与方$i$的本地数据集，$p_i(x,y)$代表该样本在参与方$i$的本地数据集被采样的概率。</p>
-<p>这样子最后获得的全局模型并不能适用于每个用户，特别是在用户的底层数据分布不相同的异构设置中，通过最小化平均损失获得的全局模型一旦应用到每个用户的本地数据集上，可能会执行得很糟糕。换句话说，式（1）给出的解决方案并不是针对每个用户的个性化，不能完全实现特定于用户的模型。</p>
-<p>故而本文作者提出了个性化联邦学习，其目标是找到一个所有参与方共享的初始点，每个参与方依据其自身的损失函数更新这个初始点，执行比较少的梯度更新步骤就可以表现良好。这样，虽然初始模型在所有参与方中一致，但每个参与方实现的最终模型根据其本地数据的不同而不同。作者研究了FedAvg算法的变体——Per-FedAvg，用于解决个性化联邦学习问题。</p>
-<h2 id="通过MAML进行个性化联邦学习"><a href="#通过MAML进行个性化联邦学习" class="headerlink" title="通过MAML进行个性化联邦学习"></a>通过MAML进行个性化联邦学习</h2><p>首先回顾MAML。与传统的监督学习设置不同，在MAML中，给定一组从基础分布中抽取的任务，目标不是找到一个在预期的所有任务上都表现良好的模型，而是找到一个初始化模型，它基于新的任务在经过较少的训练更新步骤之后，在该任务上表现良好。特别地，作者假设联邦学习中每个参与方都取这个初始点，并根据自身的损失函数更新一次模型，那么式（1）中的问题就变成了：</p>
-<p>​                                                                      ${\underset {w\in R^d}{min}}F(w):=\frac{1}{n}\sum_{i=1}^nf_i(w-\alpha \nabla f_i(w))$       (3)</p>
-<p>这样不仅保持了联邦学习的优点，也捕获了不同参与方之间的区别。这样式（3）求得的解决方案就可以作为初始模型分发给各个参与方，各个参与方在此基础上依据本地数据进行较少的训练更新步骤就可以获取一个适合自己的数据集的模型。</p>
-<h2 id="个性化联邦学习算法：Per-Fedavg"><a href="#个性化联邦学习算法：Per-Fedavg" class="headerlink" title="个性化联邦学习算法：Per-Fedavg"></a>个性化联邦学习算法：Per-Fedavg</h2><p>式（3）中的$F$可以写作元函数$F_1,F_2,…,F_n$的平均，其中元函数$F_i$代表参与方$i$的元函数：</p>
-<p>​                                                                  $F_i(w):=f_i(w-\alpha \nabla f_i(w))$              (4)</p>
-<p>类似于FedAvg，第一步是各个参与方计算本地元函数的梯度：</p>
-<p>​                                                                $\nabla F_i(w)=(I-\alpha \nabla ^2f_i(w))\nabla f_i(w-\alpha \nabla f_i(w))$        （5）</p>
-<p>但是每一轮都计算$\nabla f_i(w)$代价很高，这里取一批关于分布$p_i$的数据$D^i$，得到一个无偏估计：</p>
-<p>​                                                                $\widetilde \nabla f_i(w,D^i):=\frac{1}{|D^i|}\sum_{(x,y)\in D^i}\nabla l_i(w;x,y)$           （6）</p>
-<p>同理，式（5）中的$\nabla ^2f_i(w)$可以用$\widetilde \nabla ^2f_i(w,D^i)$代替。</p>
-<p>在Per-FedAvg的第k轮，类似于FedAVg，服务器将当前的全局模型发送给随机选择的一批参与方（也可以是全部参与方）$A_k$，每一个被选中的参与方都要在本地执行$\tau$个更新步骤，这样每个参与方都会生产一个本地模型参数序列$\{w^i_{k+1,t}\}^\tau _{t=0}$，其中$w_{k+1,0}^i=w_k$，并且满足$\tau \geq t\geq 1$  ：</p>
-<p>​                                                                        $w_{k+1,t}^i=w_{k+1,t-1}^i-\beta \widetilde{\nabla}F_i(w_{k+1,t-1}^i)$        （7）</p>
-<p>注意，所有局部迭代的$\widetilde{\nabla}F_i(w_{k+1,t-1}^i)$是使用互相独立的批次$D_t^i,D_t^{\prime i},D_t^{\prime \prime i}$计算的：</p>
-<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/1.png" class="">
-<p>然后被选中的参与方将结果发送给服务器，服务器对收到的模型进行平均，获得全局模型$w_{k+1}=\frac{1}{|A_k|}\sum_{i\in A_k}w_{k+1,\tau}^i$。Per-FedAVg算法的伪代码如下图：</p>
-<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/2.png" class="">
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>实验部分就不再赘述了，具体细节见论文原文。这里贴上实验结果。</p>
-<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/3.png" class="">
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>这篇论文的作者提出的个性化联邦学习很有想法，值得我们学习，毕竟联邦学习大多数时候各个参与方的本地数据分布就是差异性极大，个性化联邦学习专门迎合这个问题，并尝试解决它。</p>
-]]></content>
-      <categories>
-        <category>联邦学习</category>
-      </categories>
-      <tags>
-        <tag>联邦学习</tag>
-        <tag>元学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>小小酥的每日学习小结（10）</title>
-    <url>/2021/04/13/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%8810%EF%BC%89/</url>
-    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第十天。</p>
-<span id="more"></span>
-<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>今日学习内容：收入分配制度</p>
-<h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><p>国民收入(广义、狭义）</p>
-<p>国民生产净值（NNP)</p>
-<p>个人收入</p>
-<p>个人可支配收入（DPI)</p>
-<h2 id="二、国民收入分配"><a href="#二、国民收入分配" class="headerlink" title="二、国民收入分配"></a>二、国民收入分配</h2><p>初次分配</p>
-<p>再分配</p>
-<h2 id="三、个人收入分配制度"><a href="#三、个人收入分配制度" class="headerlink" title="三、个人收入分配制度"></a>三、个人收入分配制度</h2><h3 id="（一）、按劳分配"><a href="#（一）、按劳分配" class="headerlink" title="（一）、按劳分配"></a>（一）、按劳分配</h3><p>原因、特点、实现形式</p>
-<h3 id="（二）、按生产要素"><a href="#（二）、按生产要素" class="headerlink" title="（二）、按生产要素"></a>（二）、按生产要素</h3><p>含义、原因、形式</p>
-<h3 id="（三）、收入分配的效率-amp-公平"><a href="#（三）、收入分配的效率-amp-公平" class="headerlink" title="（三）、收入分配的效率&amp;公平"></a>（三）、收入分配的效率&amp;公平</h3><p>效率含义、公平含义、二者关系、十八大</p>
-]]></content>
-      <categories>
-        <category>小小酥事业单位考试</category>
-      </categories>
-      <tags>
-        <tag>小小酥</tag>
-        <tag>每日总结</tag>
-      </tags>
   </entry>
   <entry>
     <title>小小酥的每日学习小结（1）</title>
@@ -185,6 +121,70 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
       <tags>
         <tag>小小酥</tag>
         <tag>每日总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小小酥的每日学习小结（10）</title>
+    <url>/2021/04/13/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%8810%EF%BC%89/</url>
+    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第十天。</p>
+<span id="more"></span>
+<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>今日学习内容：收入分配制度</p>
+<h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><p>国民收入(广义、狭义）</p>
+<p>国民生产净值（NNP)</p>
+<p>个人收入</p>
+<p>个人可支配收入（DPI)</p>
+<h2 id="二、国民收入分配"><a href="#二、国民收入分配" class="headerlink" title="二、国民收入分配"></a>二、国民收入分配</h2><p>初次分配</p>
+<p>再分配</p>
+<h2 id="三、个人收入分配制度"><a href="#三、个人收入分配制度" class="headerlink" title="三、个人收入分配制度"></a>三、个人收入分配制度</h2><h3 id="（一）、按劳分配"><a href="#（一）、按劳分配" class="headerlink" title="（一）、按劳分配"></a>（一）、按劳分配</h3><p>原因、特点、实现形式</p>
+<h3 id="（二）、按生产要素"><a href="#（二）、按生产要素" class="headerlink" title="（二）、按生产要素"></a>（二）、按生产要素</h3><p>含义、原因、形式</p>
+<h3 id="（三）、收入分配的效率-amp-公平"><a href="#（三）、收入分配的效率-amp-公平" class="headerlink" title="（三）、收入分配的效率&amp;公平"></a>（三）、收入分配的效率&amp;公平</h3><p>效率含义、公平含义、二者关系、十八大</p>
+]]></content>
+      <categories>
+        <category>小小酥事业单位考试</category>
+      </categories>
+      <tags>
+        <tag>小小酥</tag>
+        <tag>每日总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>个性化联邦学习：Personalized Federated Learning</title>
+    <url>/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/</url>
+    <content><![CDATA[<p>今日调研了Alireza Fallah等人提出的个性化联邦学习，<a href="https://arxiv.org/abs/2002.07948">论文链接</a></p>
+<span id="more"></span>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在联邦学习场景中，存在$n$个参与方和一个服务器，其中每个参与方都只能访问自己本地的数据样本，利用本地数据样本训练本地模型，再将本地模型参数上传至服务器，服务器收到所有进行本地训练的参与方的本地模型参数后，对其进行聚合（往往是加权平均）获得全局模型参数，再将其广播给所有的参与方，进行下一轮训练。将$f_i:R^d\rightarrow R$作为参与方$i$的损失函数，那么联邦学习的目标就是：</p>
+<p>​                                                                              ${\underset {w\in R^d}{min}}f(w):=\frac{1}{n}\sum_{i=1}^nf_i(w)$           (1)</p>
+<p>对于监督学习，$f_i$可以代表参与方$i$的本地数据分布上的期望损失：</p>
+<p>​                                                                              $f_i(w):=E_{(x,y)\sim p_i}[l_i(w;x,y)]$        (2)</p>
+<p>其中$l_i(w;x,y)$代表模型$w$在预测标签为$y$的样本$x$时造成的损失，$p_i$是用户$i$的数据分布。在数据异构性强的设定下不同参与方的本地数据的分布是互不相同的。那么$f_i(w)$同样可以写作$f_i(w)=\sum_{(x,y)\in S_i}p_i(x,y)l_i(w;x,y)$，其中$S_i$代表参与方$i$的本地数据集，$p_i(x,y)$代表该样本在参与方$i$的本地数据集被采样的概率。</p>
+<p>这样子最后获得的全局模型并不能适用于每个用户，特别是在用户的底层数据分布不相同的异构设置中，通过最小化平均损失获得的全局模型一旦应用到每个用户的本地数据集上，可能会执行得很糟糕。换句话说，式（1）给出的解决方案并不是针对每个用户的个性化，不能完全实现特定于用户的模型。</p>
+<p>故而本文作者提出了个性化联邦学习，其目标是找到一个所有参与方共享的初始点，每个参与方依据其自身的损失函数更新这个初始点，执行比较少的梯度更新步骤就可以表现良好。这样，虽然初始模型在所有参与方中一致，但每个参与方实现的最终模型根据其本地数据的不同而不同。作者研究了FedAvg算法的变体——Per-FedAvg，用于解决个性化联邦学习问题。</p>
+<h2 id="通过MAML进行个性化联邦学习"><a href="#通过MAML进行个性化联邦学习" class="headerlink" title="通过MAML进行个性化联邦学习"></a>通过MAML进行个性化联邦学习</h2><p>首先回顾MAML。与传统的监督学习设置不同，在MAML中，给定一组从基础分布中抽取的任务，目标不是找到一个在预期的所有任务上都表现良好的模型，而是找到一个初始化模型，它基于新的任务在经过较少的训练更新步骤之后，在该任务上表现良好。特别地，作者假设联邦学习中每个参与方都取这个初始点，并根据自身的损失函数更新一次模型，那么式（1）中的问题就变成了：</p>
+<p>​                                                                      ${\underset {w\in R^d}{min}}F(w):=\frac{1}{n}\sum_{i=1}^nf_i(w-\alpha \nabla f_i(w))$       (3)</p>
+<p>这样不仅保持了联邦学习的优点，也捕获了不同参与方之间的区别。这样式（3）求得的解决方案就可以作为初始模型分发给各个参与方，各个参与方在此基础上依据本地数据进行较少的训练更新步骤就可以获取一个适合自己的数据集的模型。</p>
+<h2 id="个性化联邦学习算法：Per-Fedavg"><a href="#个性化联邦学习算法：Per-Fedavg" class="headerlink" title="个性化联邦学习算法：Per-Fedavg"></a>个性化联邦学习算法：Per-Fedavg</h2><p>式（3）中的$F$可以写作元函数$F_1,F_2,…,F_n$的平均，其中元函数$F_i$代表参与方$i$的元函数：</p>
+<p>​                                                                  $F_i(w):=f_i(w-\alpha \nabla f_i(w))$              (4)</p>
+<p>类似于FedAvg，第一步是各个参与方计算本地元函数的梯度：</p>
+<p>​                                                                $\nabla F_i(w)=(I-\alpha \nabla ^2f_i(w))\nabla f_i(w-\alpha \nabla f_i(w))$        （5）</p>
+<p>但是每一轮都计算$\nabla f_i(w)$代价很高，这里取一批关于分布$p_i$的数据$D^i$，得到一个无偏估计：</p>
+<p>​                                                                $\widetilde \nabla f_i(w,D^i):=\frac{1}{|D^i|}\sum_{(x,y)\in D^i}\nabla l_i(w;x,y)$           （6）</p>
+<p>同理，式（5）中的$\nabla ^2f_i(w)$可以用$\widetilde \nabla ^2f_i(w,D^i)$代替。</p>
+<p>在Per-FedAvg的第k轮，类似于FedAVg，服务器将当前的全局模型发送给随机选择的一批参与方（也可以是全部参与方）$A_k$，每一个被选中的参与方都要在本地执行$\tau$个更新步骤，这样每个参与方都会生产一个本地模型参数序列$\{w^i_{k+1,t}\}^\tau _{t=0}$，其中$w_{k+1,0}^i=w_k$，并且满足$\tau \geq t\geq 1$  ：</p>
+<p>​                                                                        $w_{k+1,t}^i=w_{k+1,t-1}^i-\beta \widetilde{\nabla}F_i(w_{k+1,t-1}^i)$        （7）</p>
+<p>注意，所有局部迭代的$\widetilde{\nabla}F_i(w_{k+1,t-1}^i)$是使用互相独立的批次$D_t^i,D_t^{\prime i},D_t^{\prime \prime i}$计算的：</p>
+<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/1.png" class="">
+<p>然后被选中的参与方将结果发送给服务器，服务器对收到的模型进行平均，获得全局模型$w_{k+1}=\frac{1}{|A_k|}\sum_{i\in A_k}w_{k+1,\tau}^i$。Per-FedAVg算法的伪代码如下图：</p>
+<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/2.png" class="">
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>实验部分就不再赘述了，具体细节见论文原文。这里贴上实验结果。</p>
+<img src="/2021/03/24/%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9APersonalized-Federated-Learning/3.png" class="">
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>这篇论文的作者提出的个性化联邦学习很有想法，值得我们学习，毕竟联邦学习大多数时候各个参与方的本地数据分布就是差异性极大，个性化联邦学习专门迎合这个问题，并尝试解决它。</p>
+]]></content>
+      <categories>
+        <category>联邦学习</category>
+      </categories>
+      <tags>
+        <tag>联邦学习</tag>
+        <tag>元学习</tag>
       </tags>
   </entry>
   <entry>
@@ -378,6 +378,59 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
       </tags>
   </entry>
   <entry>
+    <title>小小酥的每日学习小结（15）</title>
+    <url>/2021/04/20/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%8815%EF%BC%89/</url>
+    <content><![CDATA[<p>小小酥备战事业单位考试的学习总结第十五天。</p>
+<span id="more"></span>
+<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>今天学习了公文的三节课</p>
+<ol>
+<li>Lec3:公文的种类（超级重点）</li>
+<li>Lec4:公文的行文/语言规范</li>
+<li>Lec5:公文的处理</li>
+</ol>
+<h2 id="一、公文的种类（15种）"><a href="#一、公文的种类（15种）" class="headerlink" title="一、公文的种类（15种）"></a>一、公文的种类（15种）</h2><h3 id="（一）上行文"><a href="#（一）上行文" class="headerlink" title="（一）上行文"></a>（一）上行文</h3><ul>
+<li>请示</li>
+<li>报告</li>
+</ul>
+<h3 id="（二）平行文"><a href="#（二）平行文" class="headerlink" title="（二）平行文"></a>（二）平行文</h3><ul>
+<li>函</li>
+<li>议案（政府给同级人大）</li>
+</ul>
+<h3 id="（三）下行文"><a href="#（三）下行文" class="headerlink" title="（三）下行文"></a>（三）下行文</h3><h4 id="最难的6个"><a href="#最难的6个" class="headerlink" title="最难的6个"></a>最难的6个</h4><ul>
+<li>决定</li>
+<li>决议</li>
+<li>公告</li>
+<li>通告</li>
+<li>通知</li>
+<li>通报</li>
+</ul>
+<h4 id="贝多芬的5个"><a href="#贝多芬的5个" class="headerlink" title="贝多芬的5个"></a>贝多芬的5个</h4><ul>
+<li>批复</li>
+<li>建议</li>
+<li>命令</li>
+<li>纪要</li>
+<li>公报</li>
+</ul>
+<h2 id="二、公文的行文-amp-语言规范"><a href="#二、公文的行文-amp-语言规范" class="headerlink" title="二、公文的行文&amp;语言规范"></a>二、公文的行文&amp;语言规范</h2><ul>
+<li>一般行文规范</li>
+<li>上行文规范（6）</li>
+<li>下行文规范（5）</li>
+<li>同级机关（联合行文）规范（6）</li>
+<li>语言规范（7），不包括生动形象</li>
+</ul>
+<h2 id="三、公文处理的规范"><a href="#三、公文处理的规范" class="headerlink" title="三、公文处理的规范"></a>三、公文处理的规范</h2><h3 id="（一）公文的拟制"><a href="#（一）公文的拟制" class="headerlink" title="（一）公文的拟制"></a>（一）公文的拟制</h3><p>起草、审核、签发</p>
+<h3 id="（二）公文的办理"><a href="#（二）公文的办理" class="headerlink" title="（二）公文的办理"></a>（二）公文的办理</h3><h4 id="1-发文办理"><a href="#1-发文办理" class="headerlink" title="1.发文办理"></a>1.发文办理</h4><p>复核、登记、印制、核发</p>
+<h4 id="2-收文办理"><a href="#2-收文办理" class="headerlink" title="2.收文办理"></a>2.收文办理</h4><p>签收、登记、初审、承办、传阅、催办、答复</p>
+<h4 id="3-归档办理"><a href="#3-归档办理" class="headerlink" title="3.归档办理"></a>3.归档办理</h4><h3 id="（三）公文的管理"><a href="#（三）公文的管理" class="headerlink" title="（三）公文的管理"></a>（三）公文的管理</h3><h4 id="1-组织管理"><a href="#1-组织管理" class="headerlink" title="1.组织管理"></a>1.组织管理</h4><h4 id="2-制度管理"><a href="#2-制度管理" class="headerlink" title="2.制度管理"></a>2.制度管理</h4>]]></content>
+      <categories>
+        <category>小小酥事业单位考试</category>
+      </categories>
+      <tags>
+        <tag>小小酥</tag>
+        <tag>每日总结</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>小小酥的每日学习小结（2）</title>
     <url>/2021/04/05/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%882%EF%BC%89/</url>
     <content><![CDATA[<p>今天是小小酥备战事业单位考试的第二天。</p>
@@ -443,50 +496,36 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
       </tags>
   </entry>
   <entry>
-    <title>小小酥的每日学习小结（15）</title>
-    <url>/2021/04/20/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%8815%EF%BC%89/</url>
-    <content><![CDATA[<p>小小酥备战事业单位考试的学习总结第十五天。</p>
+    <title>小小酥的每日学习小结（4）</title>
+    <url>/2021/04/07/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%884%EF%BC%89/</url>
+    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第四天。</p>
 <span id="more"></span>
-<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>今天学习了公文的三节课</p>
-<ol>
-<li>Lec3:公文的种类（超级重点）</li>
-<li>Lec4:公文的行文/语言规范</li>
-<li>Lec5:公文的处理</li>
-</ol>
-<h2 id="一、公文的种类（15种）"><a href="#一、公文的种类（15种）" class="headerlink" title="一、公文的种类（15种）"></a>一、公文的种类（15种）</h2><h3 id="（一）上行文"><a href="#（一）上行文" class="headerlink" title="（一）上行文"></a>（一）上行文</h3><ul>
-<li>请示</li>
-<li>报告</li>
+<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>政治完结，今天着重整理政治笔记&amp;刷了部分题</p>
+<p>开始学习经济板块</p>
+<h2 id="一、政治刷题进度"><a href="#一、政治刷题进度" class="headerlink" title="一、政治刷题进度"></a>一、政治刷题进度</h2><ul>
+<li>党史&amp;党建，159/544</li>
+<li>毛思，120/218</li>
+<li>邓论（未开始）</li>
 </ul>
-<h3 id="（二）平行文"><a href="#（二）平行文" class="headerlink" title="（二）平行文"></a>（二）平行文</h3><ul>
-<li>函</li>
-<li>议案（政府给同级人大）</li>
+<h2 id="二、经济基原"><a href="#二、经济基原" class="headerlink" title="二、经济基原"></a>二、经济基原</h2><h3 id="1-市场的含义"><a href="#1-市场的含义" class="headerlink" title="1.市场的含义"></a>1.市场的含义</h3><ul>
+<li>场所</li>
+<li>支付能力的需求</li>
+<li>交换关系</li>
 </ul>
-<h3 id="（三）下行文"><a href="#（三）下行文" class="headerlink" title="（三）下行文"></a>（三）下行文</h3><h4 id="最难的6个"><a href="#最难的6个" class="headerlink" title="最难的6个"></a>最难的6个</h4><ul>
-<li>决定</li>
-<li>决议</li>
-<li>公告</li>
-<li>通告</li>
-<li>通知</li>
-<li>通报</li>
+<h3 id="2-市场的要素"><a href="#2-市场的要素" class="headerlink" title="2.市场的要素"></a>2.市场的要素</h3><ul>
+<li>主体（人），3类</li>
+<li>客体（商品），2类</li>
+<li>行为，3种</li>
+<li>秩序（是前提）</li>
 </ul>
-<h4 id="贝多芬的5个"><a href="#贝多芬的5个" class="headerlink" title="贝多芬的5个"></a>贝多芬的5个</h4><ul>
-<li>批复</li>
-<li>建议</li>
-<li>命令</li>
-<li>纪要</li>
-<li>公报</li>
+<h3 id="3-市场经济含"><a href="#3-市场经济含" class="headerlink" title="3.市场经济含"></a>3.市场经济含</h3><ul>
+<li>根源</li>
+<li>含义</li>
+<li>发展过程 （3个）</li>
+<li>阶段（2个）</li>
+<li>与商品经济的关系</li>
 </ul>
-<h2 id="二、公文的行文-amp-语言规范"><a href="#二、公文的行文-amp-语言规范" class="headerlink" title="二、公文的行文&amp;语言规范"></a>二、公文的行文&amp;语言规范</h2><ul>
-<li>一般行文规范</li>
-<li>上行文规范（6）</li>
-<li>下行文规范（5）</li>
-<li>同级机关（联合行文）规范（6）</li>
-<li>语言规范（7），不包括生动形象</li>
-</ul>
-<h2 id="三、公文处理的规范"><a href="#三、公文处理的规范" class="headerlink" title="三、公文处理的规范"></a>三、公文处理的规范</h2><h3 id="（一）公文的拟制"><a href="#（一）公文的拟制" class="headerlink" title="（一）公文的拟制"></a>（一）公文的拟制</h3><p>起草、审核、签发</p>
-<h3 id="（二）公文的办理"><a href="#（二）公文的办理" class="headerlink" title="（二）公文的办理"></a>（二）公文的办理</h3><h4 id="1-发文办理"><a href="#1-发文办理" class="headerlink" title="1.发文办理"></a>1.发文办理</h4><p>复核、登记、印制、核发</p>
-<h4 id="2-收文办理"><a href="#2-收文办理" class="headerlink" title="2.收文办理"></a>2.收文办理</h4><p>签收、登记、初审、承办、传阅、催办、答复</p>
-<h4 id="3-归档办理"><a href="#3-归档办理" class="headerlink" title="3.归档办理"></a>3.归档办理</h4><h3 id="（三）公文的管理"><a href="#（三）公文的管理" class="headerlink" title="（三）公文的管理"></a>（三）公文的管理</h3><h4 id="1-组织管理"><a href="#1-组织管理" class="headerlink" title="1.组织管理"></a>1.组织管理</h4><h4 id="2-制度管理"><a href="#2-制度管理" class="headerlink" title="2.制度管理"></a>2.制度管理</h4>]]></content>
+]]></content>
       <categories>
         <category>小小酥事业单位考试</category>
       </categories>
@@ -528,45 +567,6 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
 <h3 id="2-形成过程"><a href="#2-形成过程" class="headerlink" title="2.形成过程"></a>2.形成过程</h3><h3 id="3-历史地位-amp-之道意义"><a href="#3-历史地位-amp-之道意义" class="headerlink" title="3.历史地位&amp;之道意义"></a>3.历史地位&amp;之道意义</h3><h2 id="三、科学发展观"><a href="#三、科学发展观" class="headerlink" title="三、科学发展观"></a>三、科学发展观</h2><p>2003年，江西，明确使用</p>
 <p>十七大写入党章</p>
 <p>十八大作为党的指导细想写入党章</p>
-]]></content>
-      <categories>
-        <category>小小酥事业单位考试</category>
-      </categories>
-      <tags>
-        <tag>小小酥</tag>
-        <tag>每日总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>小小酥的每日学习小结（4）</title>
-    <url>/2021/04/07/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%884%EF%BC%89/</url>
-    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第四天。</p>
-<span id="more"></span>
-<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><p>政治完结，今天着重整理政治笔记&amp;刷了部分题</p>
-<p>开始学习经济板块</p>
-<h2 id="一、政治刷题进度"><a href="#一、政治刷题进度" class="headerlink" title="一、政治刷题进度"></a>一、政治刷题进度</h2><ul>
-<li>党史&amp;党建，159/544</li>
-<li>毛思，120/218</li>
-<li>邓论（未开始）</li>
-</ul>
-<h2 id="二、经济基原"><a href="#二、经济基原" class="headerlink" title="二、经济基原"></a>二、经济基原</h2><h3 id="1-市场的含义"><a href="#1-市场的含义" class="headerlink" title="1.市场的含义"></a>1.市场的含义</h3><ul>
-<li>场所</li>
-<li>支付能力的需求</li>
-<li>交换关系</li>
-</ul>
-<h3 id="2-市场的要素"><a href="#2-市场的要素" class="headerlink" title="2.市场的要素"></a>2.市场的要素</h3><ul>
-<li>主体（人），3类</li>
-<li>客体（商品），2类</li>
-<li>行为，3种</li>
-<li>秩序（是前提）</li>
-</ul>
-<h3 id="3-市场经济含"><a href="#3-市场经济含" class="headerlink" title="3.市场经济含"></a>3.市场经济含</h3><ul>
-<li>根源</li>
-<li>含义</li>
-<li>发展过程 （3个）</li>
-<li>阶段（2个）</li>
-<li>与商品经济的关系</li>
-</ul>
 ]]></content>
       <categories>
         <category>小小酥事业单位考试</category>
@@ -700,62 +700,6 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
       </tags>
   </entry>
   <entry>
-    <title>小小酥的每日学习小结（9）</title>
-    <url>/2021/04/12/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%889%EF%BC%89/</url>
-    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第九天。</p>
-<span id="more"></span>
-<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><h2 id="一、宏观经济运行（important）"><a href="#一、宏观经济运行（important）" class="headerlink" title="一、宏观经济运行（important）"></a>一、宏观经济运行（important）</h2><p>总供给&amp;总需求：含义、公式</p>
-<p>总供给&amp;总需求的3种状态</p>
-<p>宏观调控的目标&amp;任务</p>
-<h2 id="二、通货膨胀、紧缩（important）"><a href="#二、通货膨胀、紧缩（important）" class="headerlink" title="二、通货膨胀、紧缩（important）"></a>二、通货膨胀、紧缩（important）</h2><p>含义</p>
-<p>本质</p>
-<p>表现（4）</p>
-<p>成因（4）</p>
-<p>影响（5）</p>
-<p>措施（2）</p>
-<p>衡量指标（3）</p>
-<h2 id="三、宏观调控政策"><a href="#三、宏观调控政策" class="headerlink" title="三、宏观调控政策"></a>三、宏观调控政策</h2><p>通过调节总需求</p>
-<h3 id="（一）、财政政策（important）"><a href="#（一）、财政政策（important）" class="headerlink" title="（一）、财政政策（important）"></a>（一）、财政政策（important）</h3><p>财政收入：税、费、利、债</p>
-<p>含义：主体政府，财政收入&amp;支出</p>
-<p>手段（5）：国家预算、税收、国债、财政补贴、财政投资</p>
-<p>分类（2）</p>
-<h3 id="（二）、货币政策（important）"><a href="#（二）、货币政策（important）" class="headerlink" title="（二）、货币政策（important）"></a>（二）、货币政策（important）</h3><p>含义：主体央行，货币供应量</p>
-<p>手段（4）：利率、法定准备金、贴现率、公开市场业务（方向一致）</p>
-<p>分类（2）</p>
-<h3 id="（三）、产业政策"><a href="#（三）、产业政策" class="headerlink" title="（三）、产业政策"></a>（三）、产业政策</h3><p>包括：产业组织+产业结构</p>
-<p>依靠手段：靠“市场机制”，而不是指令性计划</p>
-<h3 id="（四）、收入政策"><a href="#（四）、收入政策" class="headerlink" title="（四）、收入政策"></a>（四）、收入政策</h3><p>坚持按劳分配为主，生产要素结合（效率优先，兼顾公平）</p>
-<p>采取措施</p>
-<ul>
-<li>法定最低工资标准</li>
-<li>税收调节</li>
-<li>实施工资和物价管制</li>
-<li>增加转移支付和其他各种福利</li>
-</ul>
-<h2 id="四、Other"><a href="#四、Other" class="headerlink" title="四、Other"></a>四、Other</h2><h3 id="（一）、社主市场经济，政府干预的必要性"><a href="#（一）、社主市场经济，政府干预的必要性" class="headerlink" title="（一）、社主市场经济，政府干预的必要性"></a>（一）、社主市场经济，政府干预的必要性</h3><p>市场机制的5个不足，1个优先</p>
-<p>不足：</p>
-<ol>
-<li>市场机制具有自发性、滞后性、短期性、盲目性、不确定性（5）</li>
-<li>无法限制垄断</li>
-<li>无法解决收入分配不公</li>
-<li>不能提供公共产品—&gt;（公共产品3大特别，2大分类）</li>
-<li>外部效应（外部经济&amp;外部不经济）：外部不经济无法调控</li>
-</ol>
-<h3 id="（二）、社主市场经济，政府的经济职能（4）"><a href="#（二）、社主市场经济，政府的经济职能（4）" class="headerlink" title="（二）、社主市场经济，政府的经济职能（4）"></a>（二）、社主市场经济，政府的经济职能（4）</h3><p>宏观调控</p>
-<p>提供公共产品、服务</p>
-<p>管理国有资产</p>
-<p>维护公平竞争的市场秩序</p>
-<h3 id="（三）、政府的宏观调控"><a href="#（三）、政府的宏观调控" class="headerlink" title="（三）、政府的宏观调控"></a>（三）、政府的宏观调控</h3><p>含义、主要目标&amp;任务、方式&amp;手段</p>
-]]></content>
-      <categories>
-        <category>小小酥事业单位考试</category>
-      </categories>
-      <tags>
-        <tag>小小酥</tag>
-        <tag>每日总结</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>小小酥的每日学习小结（7&amp;8）</title>
     <url>/2021/04/11/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%887%EF%BC%89/</url>
     <content><![CDATA[<p>今天是小小酥备战事业单位考试的第七和第八天。</p>
@@ -848,6 +792,62 @@ Q_{n+1}&\dot{=}\frac{1}{n}\sum_{i=1}^{n}R_i \\
 <p>“技术贸易”最典型的是“技术转让”</p>
 <p>“技术转让”的三种类别：独自+排他+普通</p>
 <h4 id="5、信息市场"><a href="#5、信息市场" class="headerlink" title="5、信息市场"></a>5、信息市场</h4><p>交易活动多次性+交易间接性+强实效性</p>
+]]></content>
+      <categories>
+        <category>小小酥事业单位考试</category>
+      </categories>
+      <tags>
+        <tag>小小酥</tag>
+        <tag>每日总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小小酥的每日学习小结（9）</title>
+    <url>/2021/04/12/%E5%B0%8F%E5%B0%8F%E9%85%A5%E7%9A%84%E6%AF%8F%E6%97%A5%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93%EF%BC%889%EF%BC%89/</url>
+    <content><![CDATA[<p>今天是小小酥备战事业单位考试的第九天。</p>
+<span id="more"></span>
+<h1 id="每日学习小结"><a href="#每日学习小结" class="headerlink" title="每日学习小结"></a>每日学习小结</h1><h2 id="一、宏观经济运行（important）"><a href="#一、宏观经济运行（important）" class="headerlink" title="一、宏观经济运行（important）"></a>一、宏观经济运行（important）</h2><p>总供给&amp;总需求：含义、公式</p>
+<p>总供给&amp;总需求的3种状态</p>
+<p>宏观调控的目标&amp;任务</p>
+<h2 id="二、通货膨胀、紧缩（important）"><a href="#二、通货膨胀、紧缩（important）" class="headerlink" title="二、通货膨胀、紧缩（important）"></a>二、通货膨胀、紧缩（important）</h2><p>含义</p>
+<p>本质</p>
+<p>表现（4）</p>
+<p>成因（4）</p>
+<p>影响（5）</p>
+<p>措施（2）</p>
+<p>衡量指标（3）</p>
+<h2 id="三、宏观调控政策"><a href="#三、宏观调控政策" class="headerlink" title="三、宏观调控政策"></a>三、宏观调控政策</h2><p>通过调节总需求</p>
+<h3 id="（一）、财政政策（important）"><a href="#（一）、财政政策（important）" class="headerlink" title="（一）、财政政策（important）"></a>（一）、财政政策（important）</h3><p>财政收入：税、费、利、债</p>
+<p>含义：主体政府，财政收入&amp;支出</p>
+<p>手段（5）：国家预算、税收、国债、财政补贴、财政投资</p>
+<p>分类（2）</p>
+<h3 id="（二）、货币政策（important）"><a href="#（二）、货币政策（important）" class="headerlink" title="（二）、货币政策（important）"></a>（二）、货币政策（important）</h3><p>含义：主体央行，货币供应量</p>
+<p>手段（4）：利率、法定准备金、贴现率、公开市场业务（方向一致）</p>
+<p>分类（2）</p>
+<h3 id="（三）、产业政策"><a href="#（三）、产业政策" class="headerlink" title="（三）、产业政策"></a>（三）、产业政策</h3><p>包括：产业组织+产业结构</p>
+<p>依靠手段：靠“市场机制”，而不是指令性计划</p>
+<h3 id="（四）、收入政策"><a href="#（四）、收入政策" class="headerlink" title="（四）、收入政策"></a>（四）、收入政策</h3><p>坚持按劳分配为主，生产要素结合（效率优先，兼顾公平）</p>
+<p>采取措施</p>
+<ul>
+<li>法定最低工资标准</li>
+<li>税收调节</li>
+<li>实施工资和物价管制</li>
+<li>增加转移支付和其他各种福利</li>
+</ul>
+<h2 id="四、Other"><a href="#四、Other" class="headerlink" title="四、Other"></a>四、Other</h2><h3 id="（一）、社主市场经济，政府干预的必要性"><a href="#（一）、社主市场经济，政府干预的必要性" class="headerlink" title="（一）、社主市场经济，政府干预的必要性"></a>（一）、社主市场经济，政府干预的必要性</h3><p>市场机制的5个不足，1个优先</p>
+<p>不足：</p>
+<ol>
+<li>市场机制具有自发性、滞后性、短期性、盲目性、不确定性（5）</li>
+<li>无法限制垄断</li>
+<li>无法解决收入分配不公</li>
+<li>不能提供公共产品—&gt;（公共产品3大特别，2大分类）</li>
+<li>外部效应（外部经济&amp;外部不经济）：外部不经济无法调控</li>
+</ol>
+<h3 id="（二）、社主市场经济，政府的经济职能（4）"><a href="#（二）、社主市场经济，政府的经济职能（4）" class="headerlink" title="（二）、社主市场经济，政府的经济职能（4）"></a>（二）、社主市场经济，政府的经济职能（4）</h3><p>宏观调控</p>
+<p>提供公共产品、服务</p>
+<p>管理国有资产</p>
+<p>维护公平竞争的市场秩序</p>
+<h3 id="（三）、政府的宏观调控"><a href="#（三）、政府的宏观调控" class="headerlink" title="（三）、政府的宏观调控"></a>（三）、政府的宏观调控</h3><p>含义、主要目标&amp;任务、方式&amp;手段</p>
 ]]></content>
       <categories>
         <category>小小酥事业单位考试</category>
